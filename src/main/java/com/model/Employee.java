@@ -1,13 +1,17 @@
 package com.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
+
 @Data
 @Entity
 @Table(name = "employees")
-public class Employee {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Employee implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
