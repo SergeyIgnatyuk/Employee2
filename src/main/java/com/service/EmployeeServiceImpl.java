@@ -1,5 +1,6 @@
 package com.service;
 
+import com.error.ResourceNotFoundException;
 import com.model.Employee;
 import com.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
 import java.util.stream.Collectors;
 
 @Service
@@ -30,7 +32,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public Employee getEmployeeById(Long id) {
-        return employeeRepository.getOne(id);
+        return employeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User with ID: " + id + " Not Found!"));
     }
 
     @Override
@@ -42,7 +44,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
     public Employee editEmployeeById(Long id, int departmentId, String jobTitle) {
-        Employee employee = employeeRepository.getOne(id);
+        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User with ID: " + id + " Not Found!"));
         employee.setDepartmentId(departmentId);
         employee.setJobTitle(jobTitle);
         return employeeRepository.save(employee);
@@ -51,6 +53,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
     public void deleteEmployeeById(Long id) {
-        employeeRepository.deleteById(id);
+        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User with ID: " + id + " Not Found!"));
+        employeeRepository.delete(employee);
     }
 }
