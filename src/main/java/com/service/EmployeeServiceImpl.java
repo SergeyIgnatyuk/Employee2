@@ -13,6 +13,13 @@ import java.util.List;
 
 import java.util.stream.Collectors;
 
+/**
+ * Implementation of {@link EmployeeService} interface.
+ *
+ * @author Sergey Ignatyuk
+ * @version 1.0
+ */
+
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 

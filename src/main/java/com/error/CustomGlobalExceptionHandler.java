@@ -18,6 +18,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Advice of AOP for exception handlers
+ *
+ * @author Sergey Ignatyuk
+ * @version 1.0
+ */
+
 @ControllerAdvice
 public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
