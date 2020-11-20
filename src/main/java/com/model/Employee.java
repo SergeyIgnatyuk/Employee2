@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.util.CustomDateConstraint;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -20,6 +22,7 @@ import java.util.Date;
  */
 
 @Data
+@Builder
 @Entity
 @Table(name = "employees")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
