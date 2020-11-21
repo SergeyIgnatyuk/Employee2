@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -33,6 +34,8 @@ public class EmployeeServiceIntegrationTest {
     private EmployeeService employeeService;
     @Autowired
     private EmployeeRepository employeeRepository;
+    @Autowired
+    private JmsProducerService jmsProducerService;
 
     private Employee employee;
     private List<Employee> employeeList;
@@ -42,10 +45,12 @@ public class EmployeeServiceIntegrationTest {
     static class EmployeeServiceImplTestContextConfiguration {
         @MockBean
         private EmployeeRepository employeeRepository;
+        @MockBean
+        private JmsProducerService jmsProducerService;
 
         @Bean
         public EmployeeService employeeService() {
-            return new EmployeeServiceImpl(employeeRepository);
+            return new EmployeeServiceImpl(employeeRepository, jmsProducerService);
         }
     }
 
@@ -104,6 +109,7 @@ public class EmployeeServiceIntegrationTest {
         employeeService.addEmployee(employee);
 
         Mockito.verify(employeeRepository, Mockito.times(1)).save(employee);
+        Mockito.verify(jmsProducerService, Mockito.times(1)).sendMessage(String.format("Employee %s %s created!", employee.getFirstName(), employee.getLastName()));
     }
 
     @Test

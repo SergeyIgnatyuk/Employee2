@@ -1,16 +1,20 @@
 package com;
 
+import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import javax.jms.ConnectionFactory;
 
 /**
  * Configuration of Spring Boot App
@@ -46,6 +50,21 @@ public class EmployeeApplication {
         LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
         bean.setValidationMessageSource(messageSource());
         return bean;
+    }
+
+    @Bean
+    public ConnectionFactory connectionFactory(){
+        ActiveMQConnectionFactory activeMQConnectionFactory  = new ActiveMQConnectionFactory();
+        activeMQConnectionFactory.setBrokerURL("tcp://localhost:61616");
+        return  activeMQConnectionFactory;
+    }
+
+    @Bean
+    public JmsTemplate jmsTemplate(){
+        JmsTemplate jmsTemplate = new JmsTemplate();
+        jmsTemplate.setConnectionFactory(connectionFactory());
+        jmsTemplate.setPubSubDomain(true);
+        return jmsTemplate;
     }
 
     public static void main(String[] args) {

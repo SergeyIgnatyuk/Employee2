@@ -24,10 +24,12 @@ import java.util.stream.Collectors;
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+    private final JmsProducerService jmsProducerService;
 
     @Autowired
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository, JmsProducerService jmsProducerService) {
         this.employeeRepository = employeeRepository;
+        this.jmsProducerService = jmsProducerService;
     }
 
     @Override
@@ -46,6 +48,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
     public void addEmployee(Employee employee) {
         employeeRepository.save(employee);
+        jmsProducerService.sendMessage(String.format("Employee %s %s created!", employee.getFirstName(), employee.getLastName()));
     }
 
     @Override
