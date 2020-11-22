@@ -21,7 +21,7 @@ public class JmsProducerServiceImpl implements JmsProducerService {
     @Override
     public void sendMessage(String message) {
         try {
-            LOG.debug("Attempting Send message to Topic: " + "employee.topic");
+            LOG.info("Attempting Send message to Topic: " + "employee.topic");
             jmsTemplate.convertAndSend("employee.topic", message);
         } catch (Exception e) {
             LOG.error("Recieved Exception during send Message: ", e);

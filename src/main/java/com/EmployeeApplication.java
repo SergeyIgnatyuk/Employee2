@@ -26,6 +26,7 @@ import javax.jms.ConnectionFactory;
 @SpringBootApplication
 @EnableSwagger2
 public class EmployeeApplication {
+    //swagger
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
@@ -52,6 +53,7 @@ public class EmployeeApplication {
         return bean;
     }
 
+    //active mq
     @Bean
     public ConnectionFactory connectionFactory(){
         ActiveMQConnectionFactory activeMQConnectionFactory  = new ActiveMQConnectionFactory();
@@ -59,6 +61,7 @@ public class EmployeeApplication {
         return  activeMQConnectionFactory;
     }
 
+    //jms
     @Bean
     public JmsTemplate jmsTemplate(){
         JmsTemplate jmsTemplate = new JmsTemplate();
