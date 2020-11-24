@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * Integrations tests of {@link EmployeeRepository}.
  *
@@ -27,7 +29,7 @@ import java.util.stream.Stream;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-public class EmployeeRepositoryIntegrationTest {
+public class EmployeeRepositoryTest {
     @Autowired
     private TestEntityManager entityManager;
 
@@ -62,23 +64,23 @@ public class EmployeeRepositoryIntegrationTest {
         employeeList = employeeRepository.findAll();
 
 
-        Assert.assertEquals(2, employeeList.size());
+        assertEquals(2, employeeList.size());
 
-        Assert.assertEquals(1, employeeList.get(0).getId().intValue());
-        Assert.assertEquals("Sergey", employeeList.get(0).getFirstName());
-        Assert.assertEquals("Sergeev", employeeList.get(0).getLastName());
-        Assert.assertEquals(1, employeeList.get(0).getDepartmentId());
-        Assert.assertEquals("QA", employeeList.get(0).getJobTitle());
-        Assert.assertEquals("male", employeeList.get(0).getGender());
-        Assert.assertEquals(new GregorianCalendar(1989, Calendar.AUGUST, 7).getTime(), employeeList.get(0).getDateOfBirth());
+        assertEquals(1, employeeList.get(0).getId().intValue());
+        assertEquals("Sergey", employeeList.get(0).getFirstName());
+        assertEquals("Sergeev", employeeList.get(0).getLastName());
+        assertEquals(1, employeeList.get(0).getDepartmentId());
+        assertEquals("QA", employeeList.get(0).getJobTitle());
+        assertEquals("male", employeeList.get(0).getGender());
+        assertEquals(new GregorianCalendar(1989, Calendar.AUGUST, 7).getTime(), employeeList.get(0).getDateOfBirth());
 
-        Assert.assertEquals(2, employeeList.get(1).getId().intValue());
-        Assert.assertEquals("Natalia", employeeList.get(1).getFirstName());
-        Assert.assertEquals("Sergeeva", employeeList.get(1).getLastName());
-        Assert.assertEquals(2, employeeList.get(1).getDepartmentId());
-        Assert.assertEquals("Java Developer", employeeList.get(1).getJobTitle());
-        Assert.assertEquals("female", employeeList.get(1).getGender());
-        Assert.assertEquals(new GregorianCalendar(1989, Calendar.APRIL, 4).getTime(), employeeList.get(1).getDateOfBirth());
+        assertEquals(2, employeeList.get(1).getId().intValue());
+        assertEquals("Natalia", employeeList.get(1).getFirstName());
+        assertEquals("Sergeeva", employeeList.get(1).getLastName());
+        assertEquals(2, employeeList.get(1).getDepartmentId());
+        assertEquals("Java Developer", employeeList.get(1).getJobTitle());
+        assertEquals("female", employeeList.get(1).getGender());
+        assertEquals(new GregorianCalendar(1989, Calendar.APRIL, 4).getTime(), employeeList.get(1).getDateOfBirth());
     }
 
     @Test
@@ -97,13 +99,13 @@ public class EmployeeRepositoryIntegrationTest {
 
         employee = employeeRepository.findById(1L).get();
 
-        Assert.assertEquals(1, employee.getId().intValue());
-        Assert.assertEquals("Sergey", employee.getFirstName());
-        Assert.assertEquals("Sergeev", employee.getLastName());
-        Assert.assertEquals(1, employee.getDepartmentId());
-        Assert.assertEquals("QA", employee.getJobTitle());
-        Assert.assertEquals("male", employee.getGender());
-        Assert.assertEquals(new GregorianCalendar(1989, Calendar.AUGUST, 7).getTime(), employee.getDateOfBirth());
+        assertEquals(1, employee.getId().intValue());
+        assertEquals("Sergey", employee.getFirstName());
+        assertEquals("Sergeev", employee.getLastName());
+        assertEquals(1, employee.getDepartmentId());
+        assertEquals("QA", employee.getJobTitle());
+        assertEquals("male", employee.getGender());
+        assertEquals(new GregorianCalendar(1989, Calendar.AUGUST, 7).getTime(), employee.getDateOfBirth());
     }
 
     @Test
@@ -124,12 +126,12 @@ public class EmployeeRepositoryIntegrationTest {
         employee = entityManager.find(Employee.class, 1L);
 
         //then
-        Assert.assertEquals(1, employee.getId().intValue());
-        Assert.assertEquals("Petya", employee.getFirstName());
-        Assert.assertEquals("Petrov", employee.getLastName());
-        Assert.assertEquals(2, employee.getDepartmentId());
-        Assert.assertEquals("JS Developer", employee.getJobTitle());
-        Assert.assertEquals("male", employee.getGender());
-        Assert.assertEquals(new GregorianCalendar(1995, Calendar.MARCH, 15).getTime(), employee.getDateOfBirth());
+        assertEquals(1, employee.getId().intValue());
+        assertEquals("Petya", employee.getFirstName());
+        assertEquals("Petrov", employee.getLastName());
+        assertEquals(2, employee.getDepartmentId());
+        assertEquals("JS Developer", employee.getJobTitle());
+        assertEquals("male", employee.getGender());
+        assertEquals(new GregorianCalendar(1995, Calendar.MARCH, 15).getTime(), employee.getDateOfBirth());
     }
 }

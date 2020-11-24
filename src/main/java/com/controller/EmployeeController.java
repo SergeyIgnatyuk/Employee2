@@ -57,7 +57,7 @@ public class EmployeeController {
         return new ResponseEntity<>(httpHeaders, HttpStatus.CREATED);
     }
 
-    @PutMapping("employees/{id}")
+    @PutMapping("/employees/{id}")
     @ApiOperation(value = "update department & job employee by ID")
     public ResponseEntity<Employee> editEmployeeById(@PathVariable @Min(value = 1, message = "must be greater than or equal to 1") Long id,
                                                      @Min(value = 1, message = "must between 1 and 2") @Max(value = 2, message = "must between 1 and 2") @RequestParam int departmentId,
@@ -65,7 +65,7 @@ public class EmployeeController {
         return new ResponseEntity<>(employeeService.editEmployeeById(id, departmentId, jobTitle), HttpStatus.OK);
     }
 
-    @DeleteMapping("employees/{id}")
+    @DeleteMapping("/employees/{id}")
     @ApiOperation(value = "delete employee by ID")
     public ResponseEntity<Void> deleteEmployeeById(@PathVariable @Min(value = 1, message = "must be greater than or equal to 1") Long id) {
         employeeService.deleteEmployeeById(id);

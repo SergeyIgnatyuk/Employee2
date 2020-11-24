@@ -2,11 +2,9 @@ package com.service;
 
 import com.model.Employee;
 import com.repository.EmployeeRepository;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -21,6 +19,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 /**
  * Integrations tests of {@link EmployeeServiceImpl}.
  *
@@ -29,7 +31,7 @@ import java.util.stream.Stream;
  */
 
 @RunWith(SpringRunner.class)
-public class EmployeeServiceIntegrationTest {
+public class EmployeeServiceTest {
     @Autowired
     private EmployeeService employeeService;
     @Autowired
@@ -77,56 +79,56 @@ public class EmployeeServiceIntegrationTest {
 
         this.employeeList = Stream.of(employee2, employee).collect(Collectors.toList());
 
-        Mockito.when(employeeRepository.findAll()).thenReturn(employeeList);
-        Mockito.when(employeeRepository.findById(1L)).thenReturn(Optional.ofNullable(employee));
+        when(employeeRepository.findAll()).thenReturn(employeeList);
+        when(employeeRepository.findById(1L)).thenReturn(Optional.ofNullable(employee));
     }
 
     @Test
     public void whenGetEmployees_thenMethodFindAllShouldBeCalled() {
         this.employeeList = employeeService.getEmployees();
 
-        Assert.assertEquals(1, employeeList.get(0).getId().intValue());
-        Assert.assertEquals(2, employeeList.get(1).getId().intValue());
-        Mockito.verify(employeeRepository, Mockito.times(1)).findAll();
+        assertEquals(1, employeeList.get(0).getId().intValue());
+        assertEquals(2, employeeList.get(1).getId().intValue());
+        verify(employeeRepository, Mockito.times(1)).findAll();
     }
 
     @Test
     public void whenGetEmployeeById_thenMethodFindByIdShouldBeCalled() {
         this.employee = employeeService.getEmployeeById(1L);
 
-        Assert.assertEquals(1, employee.getId().intValue());
-        Assert.assertEquals("Sergey", employee.getFirstName());
-        Assert.assertEquals("Sergeev", employee.getLastName());
-        Assert.assertEquals(1, employee.getDepartmentId());
-        Assert.assertEquals("QA", employee.getJobTitle());
-        Assert.assertEquals("male", employee.getGender());
-        Assert.assertEquals(new GregorianCalendar(1989, Calendar.AUGUST, 7).getTime(), employee.getDateOfBirth());
-        Mockito.verify(employeeRepository, Mockito.times(1)).findById(1L);
+        assertEquals(1, employee.getId().intValue());
+        assertEquals("Sergey", employee.getFirstName());
+        assertEquals("Sergeev", employee.getLastName());
+        assertEquals(1, employee.getDepartmentId());
+        assertEquals("QA", employee.getJobTitle());
+        assertEquals("male", employee.getGender());
+        assertEquals(new GregorianCalendar(1989, Calendar.AUGUST, 7).getTime(), employee.getDateOfBirth());
+        verify(employeeRepository, Mockito.times(1)).findById(1L);
     }
 
     @Test
     public void whenAddEmployee_thenMethodSaveShouldBeCalled() {
         employeeService.addEmployee(employee);
 
-        Mockito.verify(employeeRepository, Mockito.times(1)).save(employee);
-        Mockito.verify(jmsProducerService, Mockito.times(1)).sendMessage(String.format("Employee %s %s created!", employee.getFirstName(), employee.getLastName()));
+        verify(employeeRepository, Mockito.times(1)).save(employee);
+        verify(jmsProducerService, Mockito.times(1)).sendMessage(String.format("Employee %s %s created!", employee.getFirstName(), employee.getLastName()));
     }
 
     @Test
     public void whenEditEmployeeById_thenMethodFindByIdAndSaveShouldBeCalled() {
         employeeService.editEmployeeById(1L, 2, "Java Developer");
 
-        Assert.assertEquals(2, employee.getDepartmentId());
-        Assert.assertEquals("Java Developer", employee.getJobTitle());
-        Mockito.verify(employeeRepository, Mockito.times(1)).findById(1L);
-        Mockito.verify(employeeRepository, Mockito.times(1)).save(employee);
+        assertEquals(2, employee.getDepartmentId());
+        assertEquals("Java Developer", employee.getJobTitle());
+        verify(employeeRepository, Mockito.times(1)).findById(1L);
+        verify(employeeRepository, Mockito.times(1)).save(employee);
     }
 
     @Test
     public void whenDeleteEmployeeById_thenMethodDeleteShouldBeCalled() {
         employeeService.deleteEmployeeById(1L);
 
-        Mockito.verify(employeeRepository, Mockito.times(1)).findById(1L);
-        Mockito.verify(employeeRepository, Mockito.times(1)).delete(employee);
+        verify(employeeRepository, Mockito.times(1)).findById(1L);
+        verify(employeeRepository, Mockito.times(1)).delete(employee);
     }
 }

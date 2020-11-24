@@ -41,7 +41,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public Employee getEmployeeById(Long id) {
-        return employeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User with ID: " + id + " Not Found!"));
+        return employeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Employee with ID: " + id + " Not Found!"));
     }
 
     @Override
@@ -54,7 +54,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
     public Employee editEmployeeById(Long id, int departmentId, String jobTitle) {
-        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User with ID: " + id + " Not Found!"));
+        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Employee with ID: " + id + " Not Found!"));
         employee.setDepartmentId(departmentId);
         employee.setJobTitle(jobTitle);
         return employeeRepository.save(employee);
@@ -63,7 +63,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
     public void deleteEmployeeById(Long id) {
-        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User with ID: " + id + " Not Found!"));
+        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Employee with ID: " + id + " Not Found!"));
         employeeRepository.delete(employee);
     }
 }
