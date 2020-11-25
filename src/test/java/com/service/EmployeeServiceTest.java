@@ -1,5 +1,6 @@
 package com.service;
 
+import com.error.ResourceNotFoundException;
 import com.model.Employee;
 import com.repository.EmployeeRepository;
 import org.junit.Before;
@@ -20,8 +21,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * Integrations tests of {@link EmployeeServiceImpl}.
