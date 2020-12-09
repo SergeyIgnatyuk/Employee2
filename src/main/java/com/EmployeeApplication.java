@@ -53,7 +53,7 @@ public class EmployeeApplication {
         return bean;
     }
 
-    //active mq
+    //activemq
     @Bean
     public ConnectionFactory connectionFactory(){
         ActiveMQConnectionFactory activeMQConnectionFactory  = new ActiveMQConnectionFactory();

@@ -1,4 +1,4 @@
-package com.controller;
+package com.rest;
 
 import com.error.ResourceNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;

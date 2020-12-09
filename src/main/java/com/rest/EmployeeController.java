@@ -1,4 +1,4 @@
-package com.controller;
+package com.rest;
 
 import com.model.Employee;
 import com.service.EmployeeService;
@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -26,6 +27,7 @@ import java.util.List;
  */
 
 @RestController
+@RequestMapping("/employees")
 @Validated
 @Api(value = "employee resources", description = "APIs for working with employees")
 public class EmployeeController {
@@ -36,19 +38,22 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    @GetMapping("/employees")
+    @GetMapping
+    @PreAuthorize("hasAuthority('employees:read')")
     @ApiOperation(value = "get all employees")
     public ResponseEntity<List<Employee>> getEmployees() {
         return new ResponseEntity<>(employeeService.getEmployees(), HttpStatus.OK);
     }
 
-    @GetMapping("/employees/{id}")
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('employees:read')")
     @ApiOperation(value = "get employee by ID")
     public ResponseEntity<Object> getEmployeeById(@PathVariable @Min(value = 1, message = "must be greater than or equal to 1") Long id) {
         return new ResponseEntity<>(employeeService.getEmployeeById(id), HttpStatus.OK);
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('employees:write')")
     @ApiOperation(value = "create new employee")
     public ResponseEntity<HttpHeaders> addEmployee(@Valid @RequestBody Employee employee, UriComponentsBuilder uriComponentsBuilder) {
         employeeService.addEmployee(employee);
@@ -57,7 +62,8 @@ public class EmployeeController {
         return new ResponseEntity<>(httpHeaders, HttpStatus.CREATED);
     }
 
-    @PutMapping("/employees/{id}")
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('employees:write')")
     @ApiOperation(value = "update department & job employee by ID")
     public ResponseEntity<Employee> editEmployeeById(@PathVariable @Min(value = 1, message = "must be greater than or equal to 1") Long id,
                                                      @Min(value = 1, message = "must between 1 and 2") @Max(value = 2, message = "must between 1 and 2") @RequestParam int departmentId,
@@ -65,7 +71,8 @@ public class EmployeeController {
         return new ResponseEntity<>(employeeService.editEmployeeById(id, departmentId, jobTitle), HttpStatus.OK);
     }
 
-    @DeleteMapping("/employees/{id}")
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('employees:write')")
     @ApiOperation(value = "delete employee by ID")
     public ResponseEntity<Void> deleteEmployeeById(@PathVariable @Min(value = 1, message = "must be greater than or equal to 1") Long id) {
         employeeService.deleteEmployeeById(id);
